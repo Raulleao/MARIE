@@ -1,0 +1,56 @@
+﻿// Essa parte do código inicializa o programa recebendo o endereço da base e o expoente. 
+// Em seguida, verifica se o expoente é zero. Se for, o programa é encerrado.
+input_usuario, input                    / Recebe o endereço da base
+    StoreI base                         // Armazena o valor da base no endereço indicado
+    store resultado                     // Inicializa resultado com o valor da base
+    input                               / Recebe o expoente
+    store expoente                      // Armazena o expoente
+    Skipcond 800                        // Se o expoente for zero, pula para halt
+    halt                                / Encerra a execução se o expoente for zero
+
+// O programa verifica novamente se o expoente é zero. 
+// Se não for, continua para o cálculo da exponenciação. Caso contrário, pula para a saída.
+verifica_expoente, load expoente               // Carrega o valor do expoente
+    subt one                            // Decrementa o expoente
+    store expoente                      // Armazena o novo valor do expoente
+    Skipcond 800                        // Se o expoente for zero, pula para outp
+    jump print                          // Pula para a saída
+
+// O programa chama o loop de multiplicação e, 
+// em seguida, retorna para verificar novamente o valor do expoente.
+    JnS loop_multiplicacao                  // Chama o loop de multiplicação
+    Jump verifica_expoente                         // Retorna para check_mult
+
+// O loop de multiplicação é definido e implementado. A base é carregada em 'a' e o 
+// resultado atual é carregado em 'b'. Em seguida, um loop é executado, subtraindo 
+// repetidamente a base do resultado atual e armazenando o novo resultado.
+loop_multiplicacao, dec 0               // Inicializa o loop de multiplicação
+    LoadI base                              // Carrega o valor da base
+    store a                                 // Armazena a base em 'a'
+    load resultado                          // Carrega o valor atual de resultado
+    store b                                 // Armazena o valor atual de resultado em 'b'
+
+logica_multiplicacao, load a                            // Carrega o valor de 'a'
+    subt one                                // Decrementa 'a'
+    Skipcond 800                            // Se 'a' for zero, pula para o endereço de retorno
+    JumpI loop_multiplicacao                // Retorna do loop de multiplicação
+
+    store a                                 // Armazena o novo valor de 'a'
+    load resultado                          // Carrega o valor atual de resultado
+    add b                                   // Soma 'b' ao valor atual de resultado
+    store resultado                         // Armazena o novo valor de resultado
+    Jump logica_multiplicacao                               // Repete o loop de multiplicação
+
+// Resultado final e encerra sua execução.
+print, load resultado                   // Carrega o valor final de resultado
+    Output                                  / Exibe o resultado
+    Halt                                    / Termina a execução
+
+// var
+base, dec 0                             // Endereço da base
+resultado, dec 0                        // Resultado da multiplicação
+expoente, dec 0                         // Valor do expoente
+one, dec 1                              // Constante 1
+a, dec 0                                // Valor temporário 'a'
+b, dec 0                                // Valor temporário 'b'
+add, dec 1
