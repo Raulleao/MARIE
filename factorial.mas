@@ -1,0 +1,64 @@
+﻿/********** Inicialização **********/
+input_usuario,Input                        / Solicita um número ao usuário e armazena-o na variável Fatorial
+	Store fatorial
+
+
+/********** Verificação do Caso Especial **********/
+verifica_input_zero,Load fatorial               / Carrega o valor armazenado em Fatorial
+    Skipcond 400                / Pula a próxima instrução se o valor de Fatorial for 0
+    Jump pre_calculo_fatorial                    / Pula para o cálculo do fatorial se Fatorial não for 0
+    Load UM                    / Carrega o valor 1
+    Store somador                  / Armazena 1 em Soma (fatorial de 0 é 1)
+    Jump print                 / Pula para a finalização
+
+
+/********** Configuração das Variáveis **********/
+pre_calculo_fatorial, Load fatorial          / Carrega o valor armazenado em Fatorial
+    Store multiplicando         / Armazena o valor de Fatorial em Multiplicando
+    Load somador                   / Carrega o valor de Soma
+    Skipcond 800                / Pula a próxima instrução se o valor de Soma for negativo (800 indica negativo)
+    Load UM                    / Carrega o valor 1 (utilizado para inicializar o Multiplicador)
+    Store multiplicador         / Armazena o valor 1 em Multiplicador
+    Load ZERO                   / Carrega o valor 0 (utilizado para inicializar a SomaMultiplicacao)
+    Store somaMultiplicacao     / Armazena o valor 0 em SomaMultiplicacao
+    Jump loop_multiplicacao                    / Pula para o loop de multiplicação
+
+
+/********** Loop para caulcular Fatorial **********/
+loop_logica_fatorial, Load somaMultiplicacao   / Carrega o valor da SomaMultiplicacao
+    Store somador                       / Armazena o valor da SomaMultiplicacao em Soma
+    Load fatorial                    / Carrega o valor de Fatorial
+    Subt UM                         / Subtrai 1 do valor de Fatorial
+    Skipcond 800                     / Pula a próxima instrução se o valor de Fatorial for negativo
+    Jump print                      / Pula para a finalização se o valor de Fatorial for 0 ou negativo
+    Store fatorial                   / Armazena o novo valor de Fatorial
+    Jump pre_calculo_fatorial                         / Pula de volta para o início do loop do fatorial
+
+
+/********** Loop de Multiplicação **********/
+loop_multiplicacao, Load somaMultiplicacao      / Carrega o valor da SomaMultiplicacao
+    Add multiplicador                / Adiciona o valor de Multiplicador ao valor da SomaMultiplicacao
+    Store somaMultiplicacao          / Armazena o novo valor da SomaMultiplicacao
+    Load multiplicando               / Carrega o valor de Multiplicando
+    Subt UM                         / Subtrai 1 do valor de Multiplicando
+    Store multiplicando              / Armazena o novo valor de Multiplicando
+    Skipcond 400                     / Pula a próxima instrução se o valor de Multiplicando for 0 ou negativo
+    Jump loop_multiplicacao                         / Pula de volta para o início do loop de multiplicação
+    Jump loop_logica_fatorial                     / Pula de volta para o início do loop do fatorial
+
+
+/********** Finalização **********/
+print, Load somador                / Carrega o valor de Soma
+    Output                           / Exibe o valor de Soma
+    Halt                             / Encerra a execução do programa
+
+/********** Constantes **********/    
+ZERO, DEC 0                      / Constante com valor zero
+UM, DEC 1                       / Constante com valor um
+
+/********** Variáveis **********/
+fatorial, DEC 0                  / Variável para armazenar o valor do fatorial
+somador, DEC 0                      / Variável para armazenar a soma dos valores durante a multiplicação
+multiplicando, DEC 0             / Variável para armazenar o valor sendo multiplicado a cada iteração
+multiplicador, DEC 0             / Variável para armazenar o valor que está sendo multiplicado
+somaMultiplicacao, DEC 0         / Variável para armazenar a soma parcial durante a multiplicação
