@@ -1,0 +1,106 @@
+﻿/ Quantidade de iterações
+input_usuario,Input                      / Solicita ao usuário a quantidade de elementos a serem inseridos
+    Store numElementos         / Armazena a quantidade de elementos em numElementos
+    Store contador             / contador = numElementos
+    Load inicioLista
+    Store enderecoAtual        / enderecoAtual = inicioLista
+
+/Loop que o usuário vai inputar o valor dos dados
+loop_input, Load contador      / Início do loop de entrada
+    Skipcond 800               / Se contador > 0, continua o loop
+    Jump pre_ordenacao         / Se contador <= 0, termina o loop
+    Subt UM
+    Store contador             / contador = contador - 1
+    Input                      / Solicita ao usuário o próximo valor
+    Output
+    StoreI enderecoAtual       / Armazena o valor na posição atual da lista
+    Load enderecoAtual 
+    Add UM
+    Store enderecoAtual        / enderecoAtual = enderecoAtual + 1
+    Jump loop_input            / Repete o loop
+
+/ INÍCIO DA ORDENAÇÃO
+pre_ordenacao, Load numElementos
+    Store numComparacoes       / numComparacoes = numElementos
+
+direciona_loop, Load ZERO
+    Store trocaRealizada       / trocaRealizada = 0
+    Store contador             / contador = 0
+
+loop_compara_elementos, Subt numComparacoes / realiza comparações entre elementos consecutivos da lista
+    Add UM
+    Skipcond 000               / Se contador - numComparacoes + 1 < 0, continua
+    Jump verifica_continuacao            / Se contador - numComparacoes + 1 >= 0, termina a passada
+
+    Load inicioLista
+    Add contador
+    Store enderecoAtual        / enderecoAtual = inicioLista + contador
+
+    Load inicioLista
+    Add contador
+    Add UM
+    Store proxEndereco         / proxEndereco = inicioLista + contador + 1
+
+    LoadI proxEndereco
+    Store proxValor            / proxValor = lista[contador + 1]
+
+    LoadI enderecoAtual
+    Subt proxValor
+    Skipcond 800               / Se lista[contador] - lista[contador + 1] > 0, continua
+    Jump avanca_prox_par       / Se lista[contador] - lista[contador + 1] <= 0, vai para a próxima comparação
+
+    LoadI enderecoAtual
+    StoreI proxEndereco        / lista[contador + 1] = lista[contador]
+
+    Load proxValor
+    StoreI enderecoAtual       / lista[contador] = proxValor
+
+    Load UM
+    Store trocaRealizada       / trocaRealizada = 1
+
+avanca_prox_par, Load contador / controla o avanço para o próximo par de elementos a ser comparado.
+    Add UM
+    Store contador             / contador = contador + 1
+    Jump loop_compara_elementos / Repete o loop de comparações
+
+verifica_continuacao, Load contador
+    Store numComparacoes       / numComparacoes = contador
+
+    Load trocaRealizada
+    Skipcond 400               / Se trocaRealizada == 0, termina o loop de ordenamento
+    Jump direciona_loop           / Se trocaRealizada != 0, continua o loop de ordenamento
+
+    Load inicioLista
+    Store enderecoAtual        / enderecoAtual = inicioLista
+    Load numElementos
+    Store contador             / contador = numElementos
+
+print, LoadI enderecoAtual
+    Output                     / Exibe o valor no endereço atual
+    Load enderecoAtual
+    Add UM
+    Store enderecoAtual        / enderecoAtual = enderecoAtual + 1
+    Load contador
+    Subt UM
+    Store contador             / contador = contador - 1
+    Skipcond 400               / Se contador == 0, termina o loop
+    Jump print                 / Se contador != 0, continua o loop de impressão
+
+    Halt                       / Termina o programa
+    
+/constantes
+ZERO, DEC 0                   / Constante 0
+UM, DEC 1                     / Constante 1
+
+/variáveis
+numElementos, DEC 0           / Número de elementos da lista
+trocaRealizada, DEC 0         / Flag para otimizar o ordenamento
+inicioLista, DEC 80           / Endereço do primeiro elemento da lista
+enderecoAtual, DEC 80         / Endereço do elemento atual da lista
+proxEndereco, DEC 81          / Endereço do próximo elemento
+proxValor, DEC 0              / Valor auxiliar para o intercâmbio
+numComparacoes, DEC 0         / Contador para ciclos de comparação
+contador, DEC 0               / Contador geral
+
+
+
