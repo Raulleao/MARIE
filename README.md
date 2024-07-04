@@ -1,6 +1,6 @@
 # MARIE Code Examples
 
-**Context:**
+## Context
 I developed these MARIE codes as a college assignment. I decided to make this repository public because there aren't many examples of MARIE code available (Exponential, Factorial, and Bubble Sort). Feel free to use the code in your projects, assignments, studies, etc. However, be cautious of plagiarism.
 
 ## Algorithms
